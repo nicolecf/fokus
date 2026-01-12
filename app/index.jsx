@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ActionButton } from "../components/ActionButton";
 import { FokusButtons } from "../components/FokusButton";
+import { IconPause, IconPlay } from "../components/Icons";
 import { Timer } from "../components/Timer";
 
 const pomodoro = [
@@ -24,28 +25,67 @@ const pomodoro = [
     display: 'Pausa Longa',
   }
 ];
+
 export default function Index() {
 
   const [timerType, setTimerType] = useState(pomodoro[2]);
 
+  const [timeRunning, setTimeRunning] = useState(false)
+
+  const [seconds, setSeconds] = useState(pomodoro[2].initialValue)
+  const timeRef = useRef(null)
+
+  const clear = () => {
+    if (timeRef.current != null) {
+      setTimeRunning(false)
+      clearInterval(timeRef.current)
+      timeRef.current = null
+    }
+  }
+  const toggleTimerType = (newTimerType) => {
+    setTimerType(newTimerType)
+    setSeconds(newTimerType.initialValue)
+    clear()
+  }
+
+  const toggleTimer = () => {
+    if (timeRef.current) {
+      clear()
+      return
+    }
+    setTimeRunning(true)
+    const id = setInterval(() => {
+      setSeconds(oldState => {
+        if (oldState === 0) {
+          clear()
+          return timerType.initialValue
+        }
+        return oldState - 1
+      })
+    }, 1000)
+    timeRef.current = id
+  }
   return (
     <View
       style = {styles.container}
     >
-      <Image source={timerType.image}/>
+      <Image source={timerType.image} style={styles.image}/>
       <View style = {styles.actions}>
         <View style = {styles.context}>
           {pomodoro.map(p => (
-            <ActionButton 
+            <ActionButton
               key={p.id}
               active={timerType.id === p.id}
-              onPress={() => setTimerType(p)}
+              onPress={() => toggleTimerType(p)}
               display={p.display}
               />
           ))}
         </View>
-        <Timer totalSeconds={timerType.initialValue}/>
-        <FokusButtons/>
+        <Timer totalSeconds={seconds}/>
+        <FokusButtons onPress={toggleTimer}
+          title={timeRunning ? 'Pausar' : 'Começar'}
+          icon={timeRunning ? <IconPause/> : <IconPlay/>}
+        />
       </View>
       <View style = {styles.footer}>
         <Text style = {styles.footerText}>Projeto Criado sem fins de comerciais</Text>
@@ -62,6 +102,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: '#021123',
     gap: 40
+  },
+  image: {
+    width: 350,
+    height: 350,
+    maxHeight: '50%'
   },
   actions: {
     padding: 24,
