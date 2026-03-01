@@ -1,6 +1,7 @@
+import { router } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { FokusButtons } from "../components/FokusButton";
 import { Footer } from "../components/Footer";
-import { LinkButton } from "../components/LinkButton";
 
 export default function Index () {
   return (
@@ -11,7 +12,7 @@ export default function Index () {
         <Text style={{...styles.textIndex, ...styles.textIndexBold}}>mergulhe no que importa</Text>
       </View>
       <Image source={require('../assets/images/index-image.png')} style={styles.image}/>
-      <LinkButton  title={'Quero Iniciar!'} pathname={'/pomodoro'}/>
+      <FokusButtons  title={'Quero Iniciar!'} onPress={() => router.replace('/pomodoro')}/>
       <Footer />
     </View>
   )

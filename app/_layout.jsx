@@ -1,18 +1,34 @@
-import { Stack } from "expo-router/stack";
+import { Drawer } from 'expo-router/drawer';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function Layout() {
-  return (<Stack>
-    <Stack.Screen
-      name='pomodoro'
-      options={{
-        headerShown: false,
-      }}
-    />
-    <Stack.Screen
-      name='index'
-      options={{
-        headerShown: false,
-      }}
-    />
-  </Stack>);
+  return (
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Drawer
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#021123'
+          },
+          // headerTintColor: '#FFF',
+          headerTitleStyle: {
+            color: '#FFF',
+          },
+          drawerStyle: {
+            backgroundColor: '#021123'
+          },
+          drawerLabelStyle: {
+            color: '#FFF'
+          }
+        }}>
+          <Drawer.Screen
+            name='add-task/index'
+            options={{
+              // headerShown: false,
+              drawerLabel: 'Add Tasks',
+              title: 'Task',
+            }}
+          />
+      </Drawer>
+    </GestureHandlerRootView>
+  )
 }
