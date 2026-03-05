@@ -21,11 +21,36 @@ export default function Layout() {
           }
         }}>
           <Drawer.Screen
+            name='index'
+            options={{
+              headerShown: false,
+              drawerItemStyle: {
+                display: 'none',
+              }
+            }}
+          />
+          <Drawer.Screen
             name='add-task/index'
             options={{
-              // headerShown: false,
               drawerLabel: 'Add Tasks',
               title: 'Task',
+              drawerItemStyle: {
+                display: 'none',
+              }
+            }}
+          />
+          <Drawer.Screen
+            name='pomodoro'
+            options={{
+              drawerLabel: 'Timer',
+              title: '',
+            }}
+          />
+          <Drawer.Screen
+            name='tasks/index'
+            options={{
+              drawerLabel: 'Lista de Tarefas',
+              title: '',
             }}
           />
       </Drawer>
